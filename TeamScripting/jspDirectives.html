@@ -1,0 +1,160 @@
+<html>
+  <head>
+    <title>Peter, Glenn, Fred</title>
+  </head>
+
+  <body>
+<div id="content">
+
+    <h2>Concept Name</h2>
+        <p>
+        JSP Directives
+        </p>
+    <h2>Description</h2>
+        <p>
+            Directives "relay messages to the JSP container and affect how it
+            compiles the JSP page" <sup>1</sup>.
+
+            A JSP directive affects the overall structure of the servlet
+            class. It usually has the following form:.
+
+            Directives can have a number of attributes which you can list
+            down as key-value pairs and separated by commas.
+
+            <h3>Three types of directives</h3>
+            <ol>
+                <li>
+                    <code><%@ page ... %> Defines attributes that apply to an entire JSP page, such as imports, scripting language, error page, and buffering requirements.</code>
+                </li>
+
+                <li>
+                    <code><%@ include ... %> Includes a resource of text or code when the JSP page is translated.</code>
+                </li>
+
+                <li>
+                    <code><%@ taglib ... %> 	Defines a tag library and prefix for the custom tags used in the JSP page.</code>
+                </li>
+            </ol>
+
+    <h2>1. Description for Page Directives</h2>
+    <p>Java Page Directives are an easy way to control how your web page is processed behind the scenes.</p>
+    <h2>Syntax for Page Directive</h2>
+    <p><code>&lt;%@ page attribute="value" %&gt;</code></p>
+    <ol>
+        <li>buffer - specifies buffer model for output stream </li>
+        <li>isThreadSafe - specifies threading model for servlet</li>
+        <li>session - specifies whether or not the servlet does HTTP sessions</li>
+    </ol>
+
+    <h2>Example</h2>
+    <p><code>&lt;%@ page session="false" %&gt;</code></p>
+    <h2>Best Practices</h2>
+    Set to true so JSP has access to session information.
+    <h2>Drawbacks</h2>
+
+
+
+<h2>2. Description for Include Directives</h2>
+
+    <p>Include directives can be used to merge external files into the current jsp file during the translation phase.</p>
+
+    <h2>Syntax for Include directive</h2>
+    <p>
+        <code>&lt;\%@ include file="RELATIVE/PATH/TO/FILE" %&gt;</code>
+    </p>
+
+    <h2>Example: Include directives</h2>
+        <p>
+        The <a href="/java112" title="This page uses an include directive">home
+            page</a> of this site uses <code><%@ include file="/includes/coda.jsp" %></code> to include a file that contains common HTML for the footer and close of the HTML document.
+        </p>
+    <h2>JSP Translator</h2>
+        <p>
+        Here's how the JSP Translator handles expressions...
+        </p>
+
+        <p>What Tomcat's translated servlet file looks like (the relevant parts):</p>
+
+        <p>
+        <code>
+        private static java.util.Map<java.lang.String,java.lang.Long> _jspx_dependants;
+        <br />
+        static {<br />
+        _jspx_dependants = new java.util.HashMap<java.lang.String,java.lang.Long>(1);<br />
+        _jspx_dependants.put("/includes/coda.jsp", Long.valueOf(1477273074000L));<br />
+        }<br />
+        ...
+            <br />
+        public java.util.Map<java.lang.String,java.lang.Long> getDependants() {<br />
+        return _jspx_dependants;<br />
+        }<br />
+        </code>
+        </p>
+
+        <p>It creates a HashMap and stores the path/name of the file as a key, and a Long value of the file as the value.
+        </p>
+
+        <p>It then adds the HTML of the included file to the current file using out.write() statements. </p>
+
+        <p>
+            <code>
+            out.write("\t&lt;div id=\"footer\"&gt;\n");
+                <br />
+            .... (more out.write() statements for the footer HTML)
+                <br />
+            out.write("&lt;/div&gt;\n");
+                <br />
+            out.write("&lt;/body&gt;\n");
+                <br />
+            out.write("&lt;/html&gt;");
+            </code>
+        </p>
+
+    <h2>Best Practices</h2>
+        <p>
+        Explain best practices for your technology
+        </p>
+    <h2>Drawbacks</h2>
+        <p>
+        When shouldn't you use the technology?
+        </p>
+    <p>If you want to pass a variable to the included file, it won't work. Example: You want to pass the page title to an include of a header on a web page, you must use a dynamic include, not a page directive include.</p>
+    <p>It will execute inside the context of the calling page so if you statically include the same file more than once, the code in that file will exist in multiple locations on the calling page.
+
+    </p>
+        <p>
+        What shouldn't it be used for?
+        </p>
+    <p>There may be better ways to include files: dynamic includes</p>
+
+    <p>
+        <cite><sup>1</sup>Including Directives in a JSP Document (The
+            Java EE5 Tutorial, Oracle,
+            https://docs.oracle.com/cd/E19575-01/819-3669/bnajt/index.html</cite>
+    </p>
+
+
+    <h2>3. Description for Taglib Directive</h2>
+
+    <p>Allows you to implement defined custom tags for implementing custom code.</p>
+    <h2>Syntax for Taglib directive</h2>
+    <p>
+        <code>&lt;%@ page attribute="value" %&gt;</code>
+    </p>
+
+    <p>
+        <code>
+            &lt;%@ taglib uri="http://www.example.com/custlib" prefix="mytag" %&gt;<br />
+            &lt;html&gt;<br />
+            &lt;body&gt;<br />
+            &lt;mytag:hello/&gt;<br />
+            &lt;/body&gt;<br />
+            &lt;/html&gt;<br />
+            </code>
+    </p>
+
+</div>     
+      
+      
+      </body>
+</html>
